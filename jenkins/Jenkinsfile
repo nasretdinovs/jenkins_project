@@ -6,13 +6,14 @@ pipeline {
     stages {
         stage('Clone project') {
             steps {
+                deleteDir()
                 git branch: 'develop', url: 'https://github.com/Ruslan-Bikineev/Project.git'
             }
         }
         stage('Build docker images and run tests') {
             steps {
-                sh 'docker build -t api-tests-image .'
-                sh 'mkdir target '
+                sh 'docker build -t api-tests-image . &'
+                sh 'mkdir -p target/allure-results'
                 sh 'docker run --rm -d --name api-tests-container --mount type=bind,source="$(pwd)/target",destination=/app/target api-tests-image'
                 sh 'docker wait api-tests-container'
                 sh 'docker rmi api-tests-image'
@@ -22,6 +23,10 @@ pipeline {
     post {
         success {
             allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
+        }
+        // Clean after build
+        always {
+            deleteDir()
         }
     }
 }
