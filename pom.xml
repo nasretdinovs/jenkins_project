@@ -21,7 +21,7 @@
     <!--        Профиль для запуска тестов через файл api-tests.xml        -->
     <profiles>
         <profile>
-            <id>run api-tests</id>
+            <id>run-api-tests</id>
             <properties>
                 <suiteXmlFile>configuration/api-tests.xml</suiteXmlFile>
             </properties>
