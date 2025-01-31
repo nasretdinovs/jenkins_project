@@ -2,6 +2,7 @@ pipeline {
     agent any
     tools {
         maven "maven"
+        allure "allure"
     }
     stages {
         stage('Clone project') {
@@ -22,7 +23,9 @@ pipeline {
     post {
         always {
             // Генерация отчета Allure
-            allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
+            sh 'allure generate --single-file ./target/allure-results'
+            archiveArtifacts artifacts: 'allure-report/*.html', followSymlinks: false
+            // allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
             // Очистка рабочего пространства
             deleteDir()
         }
