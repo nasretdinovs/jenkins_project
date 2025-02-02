@@ -5,12 +5,17 @@ pipeline {
         allure "allure"
     }
     stages {
+        stage('Cleanup Workspace') {
+            steps {
+                deleteDir()
+            }
+        }
         stage('Clone project') {
             steps {
                 git branch: 'develop', url: 'https://github.com/Ruslan-Bikineev/Project.git'
             }
         }
-        stage('Build docker images and run tests') {
+        stage('Build and Run API Tests') {
             steps {
                 sh 'docker build -t api-tests-image .'
                 sh 'mkdir -p target/allure-results'
@@ -23,11 +28,14 @@ pipeline {
     post {
         always {
             // Генерация отчета Allure
-            sh 'allure generate --single-file ./target/allure-results'
-            archiveArtifacts artifacts: 'allure-report/*.html', followSymlinks: false
-            // allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
-            // Очистка рабочего пространства
-            deleteDir()
+            sh 'allure generate --single-file target/allure-results'
+            // Отправка отчета по электронной почте
+            emailext attachLog: true, attachmentsPattern: 'allure-report/*.html',
+                body: '',
+                subject: 'Jenkinks Report',
+                to: 'biken_r@mail.ru'
+            // Генерация и сохранение отчета Allure в Jenkins
+            allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
         }
     }
 }
