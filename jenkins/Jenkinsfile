@@ -32,7 +32,7 @@ pipeline {
             // Отправка отчета по электронной почте
             emailext attachLog: true, attachmentsPattern: 'allure-report/*.html',
                 body: '',
-                subject: 'Jenkinks Report',
+                subject: 'Jenkinks Report ${env.JOB_NAME} ${env.BUILD_NUMBER}',
                 to: 'biken_r@mail.ru'
             // Генерация и сохранение отчета Allure в Jenkins
             allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
