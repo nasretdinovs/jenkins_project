@@ -24,18 +24,20 @@ pipeline {
                 sh 'docker rmi api-tests-image'
             }
         }
+        stage('Generate allure report') {
+            // Генерация отчета Allure в 1 файл
+            sh 'allure generate --single-file target/allure-results'
+            // Генерация и сохранение отчета Allure в Jenkins
+            allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
+        }
     }
     post {
         always {
-            // Генерация отчета Allure
-            sh 'allure generate --single-file target/allure-results'
             // Отправка отчета по электронной почте
             emailext attachLog: true, attachmentsPattern: 'allure-report/*.html',
                 body: '',
-                subject: 'Jenkinks Report' ${env.JOB_NAME} ${env.BUILD_NUMBER},
+                subject: "Jenkins Report: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 to: 'biken_r@mail.ru'
-            // Генерация и сохранение отчета Allure в Jenkins
-            allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
         }
     }
 }
