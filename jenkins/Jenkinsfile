@@ -25,10 +25,12 @@ pipeline {
             }
         }
         stage('Generate allure report') {
-            // Генерация отчета Allure в 1 файл
-            sh 'allure generate --single-file target/allure-results'
-            // Генерация и сохранение отчета Allure в Jenkins
-            allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
+            steps {
+                // Генерация отчета Allure в 1 файл
+                sh 'allure generate --single-file target/allure-results'
+                // Генерация и сохранение отчета Allure в Jenkins
+                allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
+            }
         }
     }
     post {
