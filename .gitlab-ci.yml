@@ -1,0 +1,28 @@
+image: maven:3.9.9-amazoncorretto-17-alpine
+
+cache:
+  paths:
+    - .m2/repository
+
+stages:
+    - test
+    - allure
+    - send_allure
+
+Run API tests:
+  stage: test
+  script:
+      - mvn clean test -P run-api-tests
+  artifacts:
+    when: always
+    paths:
+      - target/allure-results
+
+Allure report:
+  stage: allure
+  script: mvn allure:report
+  artifacts:
+    when: always
+    paths:
+      - /target/site/allure-maven-plugin/index.html
+
