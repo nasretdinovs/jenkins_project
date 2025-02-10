@@ -4,4 +4,4 @@ WORKDIR /app
 
 COPY . .
 
-CMD ["mvn", "test", "-P run-api-tests"]
+CMD ["mvn", "test", "-P run-api-tests allure:report"]

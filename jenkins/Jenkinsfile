@@ -18,7 +18,6 @@ pipeline {
         stage('Build and Run API Tests') {
             steps {
                 sh 'docker build -t api-tests-image .'
-                sh 'mkdir -p target/allure-results'
                 sh 'docker run --rm -d --name api-tests-container --mount type=bind,source="$(pwd)/target",destination=/app/target api-tests-image'
                 sh 'docker wait api-tests-container'
                 sh 'docker rmi api-tests-image'
@@ -26,8 +25,6 @@ pipeline {
         }
         stage('Generate allure report') {
             steps {
-                // Генерация отчета Allure в 1 файл
-                sh 'allure generate --single-file target/allure-results'
                 // Генерация и сохранение отчета Allure в Jenkins
                 allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
             }
@@ -36,7 +33,7 @@ pipeline {
     post {
         always {
             // Отправка отчета по электронной почте
-            emailext attachLog: true, attachmentsPattern: 'allure-report/*.html',
+            emailext attachLog: true, attachmentsPattern: '/target/site/allure-maven-plugin/index.html',
                 body: '',
                 subject: "Jenkins Report: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 to: 'biken_r@mail.ru'
