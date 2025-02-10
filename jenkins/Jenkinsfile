@@ -18,6 +18,7 @@ pipeline {
         stage('Build and Run API Tests') {
             steps {
                 sh 'docker build -t api-tests-image .'
+                sh 'mkdir -p target/allure-results'
                 sh 'docker run --rm -d --name api-tests-container --mount type=bind,source="$(pwd)/target",destination=/app/target api-tests-image'
                 sh 'docker wait api-tests-container'
                 sh 'docker rmi api-tests-image'
