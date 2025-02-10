@@ -12,7 +12,7 @@ pipeline {
         }
         stage('Clone project') {
             steps {
-                git branch: 'develop', url: 'https://github.com/Ruslan-Bikineev/Project.git'
+                git branch: 'branch of git repository', url: 'https git repository url'
             }
         }
         stage('Build and Run API Tests') {
@@ -34,10 +34,10 @@ pipeline {
     post {
         always {
             // Отправка отчета по электронной почте
-            emailext attachLog: true, attachmentsPattern: '/target/site/allure-maven-plugin/index.html',
+            emailext attachLog: true, attachmentsPattern: 'target/site/allure-maven-plugin/index.html',
                 body: '',
                 subject: "Jenkins Report: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                to: 'biken_r@mail.ru'
+                to: 'your email address'
         }
     }
 }
