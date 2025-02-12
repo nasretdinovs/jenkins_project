@@ -66,7 +66,7 @@ public class OrderTests extends BaseTest {
         ApiMethods.postOrder(order);
         RestAssured.given()
                 .when()
-                .delete(DELETE_ORDER, order.getId())
+                .delete(DELETE_ORDER, order.getId()+1)
                 .then()
                 .statusCode(HTTP_OK)
                 .body("message", equalTo(order.getId().toString()));
