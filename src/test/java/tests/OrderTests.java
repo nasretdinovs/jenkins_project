@@ -58,7 +58,7 @@ public class OrderTests extends BaseTest {
 
     @Test
     @Story("Удаляем существующий заказ.")
-    @Description("API. Order. DELETE '/store/order/{orderId}.")
+    @Description("API. Order. DELETE '/store/order/{orderId}+1.")
     @Owner("Ruslan Bikineev")
     @Severity(CRITICAL)
     public void testDeleteExistingOrder() {
