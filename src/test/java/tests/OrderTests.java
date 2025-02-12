@@ -47,7 +47,7 @@ public class OrderTests extends BaseTest {
         ApiMethods.postOrder(order);
         Order orderResponse = RestAssured.given()
                 .when()
-                .get(GET_ORDER, order.getId())
+                .get(GET_ORDER, order.getId()+1)
                 .then()
                 .statusCode(HTTP_OK)
                 .extract()
