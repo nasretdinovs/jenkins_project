@@ -50,7 +50,7 @@ public class OrderTests extends BaseTest {
                 .when()
                 .get(GET_ORDER, order.getId())
                 .then()
-                .statusCode(HTTP_BAD_REQUEST)
+                .statusCode(HTTP_OK)
                 .extract()
                 .jsonPath()
                 .getObject("", Order.class);
