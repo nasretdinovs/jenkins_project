@@ -39,7 +39,7 @@ pipeline {
             emailext attachLog: true, attachmentsPattern: 'target/site/allure-maven-plugin/index.html',
                 body: '',
                 subject: "Jenkins Report: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                to: 'your email address'
+                to: 'your email address1, your email address2'
         }
     }
 }
