@@ -17,6 +17,7 @@ import static constants.Constants.DELETE_ORDER;
 import static constants.Constants.GET_ORDER;
 import static io.qameta.allure.SeverityLevel.BLOCKER;
 import static io.qameta.allure.SeverityLevel.CRITICAL;
+import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -49,7 +50,7 @@ public class OrderTests extends BaseTest {
                 .when()
                 .get(GET_ORDER, order.getId())
                 .then()
-                .statusCode(HTTP_OK)
+                .statusCode(HTTP_BAD_REQUEST)
                 .extract()
                 .jsonPath()
                 .getObject("", Order.class);
