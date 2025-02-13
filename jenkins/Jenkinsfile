@@ -26,6 +26,8 @@ pipeline {
         }
         stage('Generate allure report') {
             steps {
+                // Генерация отчета Allure в 1 файл
+                sh 'maven allure:report'
                 // Генерация и сохранение отчета Allure в Jenkins
                 allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
             }
