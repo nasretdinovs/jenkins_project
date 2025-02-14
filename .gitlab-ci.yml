@@ -1,28 +1,27 @@
-image: maven:3.9.9-amazoncorretto-17-alpine
-
-cache:
-  paths:
-    - .m2/repository
-
 stages:
-    - test
-    - allure
-    - send_allure
+  - test
+  - send_allure_report
 
 Run API tests:
   stage: test
-  script:
-      - mvn clean test -P run-api-tests
-  artifacts:
-    when: always
+  image: maven:3.9.9-amazoncorretto-17-alpine
+  cache:
     paths:
-      - target/allure-results
-
-Allure report:
-  stage: allure
-  script: mvn allure:report
+      - .m2/repository
+  variables:
+    MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  script:
+    - mvn clean test -P run-api-tests
+  after_script:
+    - mvn allure:report
   artifacts:
     when: always
     paths:
       - target/site/allure-maven-plugin/index.html
+    expire_in: 15 days
 
+Send to email allure report:
+  stage: send_allure_report
+  image: curlimages/curl:latest
+  script:
+    - sh email_message.sh
