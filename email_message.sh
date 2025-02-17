@@ -7,7 +7,7 @@ MESSAGE="Project: $CI_PROJECT_NAME
 URL: $CI_PROJECT_URL/pipelines/$CI_PIPELINE_ID/
 Branch: $CI_COMMIT_REF_SLUG"
 
-curl -v --ssl-reqd --url "smtps://$SMTP_SERVER:$PORT" \
+curl --ssl-reqd --url "smtps://$SMTP_SERVER:$PORT" \
     --user "$USER:$PASS" \
     --mail-from "$SENDER_ADDRESS" \
     --mail-rcpt "$RECIPIENT_ADDRESS" \
