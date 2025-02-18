@@ -26,6 +26,8 @@ pipeline {
         }
         stage('Generate allure report') {
             steps {
+                // Генерация отчета Allure в 1 файл
+                sh 'mvn allure:report'
                 // Генерация и сохранение отчета Allure в Jenkins
                 allure includeProperties: false, jdk: '', results: [[path: 'target/allure-results']]
             }
@@ -37,7 +39,7 @@ pipeline {
             emailext attachLog: true, attachmentsPattern: 'target/site/allure-maven-plugin/index.html',
                 body: '',
                 subject: "Jenkins Report: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                to: 'your email address'
+                to: 'your email address1, your email address2'
         }
     }
 }
